@@ -6,37 +6,85 @@ class App extends React.Component {
   constructor() {
     super();
     this.inputHandler = this.inputHandler.bind(this);
+    this.areAllNumbers = this.areAllNumbers.bind(this);
+    this.attributesChecker = this.attributesChecker.bind(this);
+    this.inputChecker = this.inputChecker.bind(this);
     this.state = {
-      cardName: 'Banana Briguenta',
-      cardDescription:
-        'Assim como toda banana boa de luta,'
-        + ' Banana Briguenta se tornou famosa pelos seus golpes rápidos e agilidade'
-        + ' impressionante nos ringues de vale tudo. Seu histórico como campeã de Muay'
-        + ' Thai e Boxe Chinês é seu maior diferencial.',
-      cardAttr1: 8.5,
-      cardAttr2: 8.2,
-      cardAttr3: 6.5,
-      cardImage:
-        'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/7781e256-3f3f-465a-a13a-d12083ec13a4/dcmuzww-f2dceabf-a18f-47ea-995a-58566998a060.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc3ODFlMjU2LTNmM2YtNDY1YS1hMTNhLWQxMjA4M2VjMTNhNFwvZGNtdXp3dy1mMmRjZWFiZi1hMThmLTQ3ZWEtOTk1YS01ODU2Njk5OGEwNjAucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.SgVG8A1QG5ja_zmD1COmj29G33KyzR7BuIHvMDhkRA0',
-      cardRare: 'raro',
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: 0,
+      cardAttr2: 0,
+      cardAttr3: 0,
+      cardImage: '',
+      cardRare: '',
       cardTrunfo: false,
-      optionalEmoji: '🍌 🍌 🍌',
+      optionalEmoji: '',
       // hasTrunfo: false,
-      // isSaveButtonDisabled: false,
+      isSaveButtonDisabled: true,
       // onSaveButtonClick: false,
     };
   }
 
+  areAllNumbers() {
+    const { cardAttr1, cardAttr2, cardAttr3 } = this.state;
+    const rawLst = [cardAttr1, cardAttr2, cardAttr3];
+    return rawLst.every((item) => item !== '') === true
+      ? rawLst.map((item) => Number(item))
+      : undefined;
+  }
+
   inputHandler({ target }) {
     const { name, value, checked } = target;
-    console.log(target.name);
-    if (checked) {
+    if (!checked) {
+      this.setState(() => ({
+        [name]: value,
+      }), () => this.inputChecker());
+    } else {
       this.setState({
         [name]: checked,
       });
+    }
+  }
+
+  attributesChecker() {
+    const lst = this.areAllNumbers();
+    if (lst) {
+      const minValue = 0;
+      const maxValue = 210;
+      const reducer = (total, curr) => total + curr;
+      const attrSum = lst.reduce(reducer, 0);
+      if (attrSum <= maxValue && attrSum >= minValue) {
+        const maxIndividualValue = 90;
+        const minIndividualValue = 0;
+        const attrsLimit = lst.every((attr) => attr <= maxIndividualValue
+        && attr >= minIndividualValue);
+        if (attrsLimit === true) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return false;
+  }
+
+  inputChecker() {
+    const attributesPermition = this.attributesChecker();
+    if (attributesPermition === true) {
+      const { cardName, cardImage, cardDescription, cardRare } = this.state;
+      const lst = [cardName, cardImage, cardDescription, cardRare];
+      if (lst.every((item) => item !== '') !== false) {
+        console.log('Bigger than nothing');
+        this.setState({
+          isSaveButtonDisabled: false,
+        });
+      } else {
+        this.setState({
+          isSaveButtonDisabled: true,
+        });
+      }
     } else {
       this.setState({
-        [name]: value,
+        isSaveButtonDisabled: true,
       });
     }
   }
@@ -50,14 +98,15 @@ class App extends React.Component {
           <Form
             cardName={ state.cardName }
             cardDescription={ state.cardDescription }
-            cardAttr1={ state.cardAttr1 }
-            cardAttr2={ state.cardAttr2 }
-            cardAttr3={ state.cardAttr3 }
+            cardAttr1={ String(state.cardAttr1) }
+            cardAttr2={ String(state.cardAttr2) }
+            cardAttr3={ String(state.cardAttr3) }
             cardImage={ state.cardImage }
             cardRare={ state.cardRare }
             cardTrunfo={ state.cardTrunfo }
             // hasTrunfo={ state.hasTrunfo }
-            // isSaveButtonDisabled={ state.isSaveButtonDisabled }
+            // onSaveButtonClick={ onSaveButtonClick }
+            isSaveButtonDisabled={ state.isSaveButtonDisabled }
             onInputChange={ this.inputHandler }
           />
         </div>
@@ -66,9 +115,9 @@ class App extends React.Component {
           <Card
             cardName={ state.cardName }
             cardDescription={ state.cardDescription }
-            cardAttr1={ state.cardAttr1 }
-            cardAttr2={ state.cardAttr2 }
-            cardAttr3={ state.cardAttr3 }
+            cardAttr1={ Number(state.cardAttr1) }
+            cardAttr2={ Number(state.cardAttr2) }
+            cardAttr3={ Number(state.cardAttr3) }
             cardImage={ state.cardImage }
             cardRare={ state.cardRare }
             cardTrunfo={ state.cardTrunfo }

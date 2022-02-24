@@ -21,8 +21,30 @@ class Card extends React.Component {
       }
     }
 
+    function colour() {
+      let color = '';
+      if (cardTrunfo === true) {
+        color = 'gold';
+        return color;
+      }
+      switch (cardRare) {
+      case 'normal':
+        color = 'darkgreen';
+        break;
+      case 'raro':
+        color = 'darkred';
+        break;
+      case 'muito raro':
+        color = 'darkblue';
+        break;
+      default:
+        color = 'rgb(39, 190, 139)';
+      }
+      return color;
+    }
+
     return (
-      <section id="card-container">
+      <section id="card-container" style={ { backgroundColor: colour() } }>
         <h2 data-testid="name-card">{cardName}</h2>
         <img
           id="card-image"
@@ -45,9 +67,9 @@ class Card extends React.Component {
 Card.propTypes = {
   cardName: PropTypes.string.isRequired,
   cardDescription: PropTypes.string.isRequired,
-  cardAttr1: PropTypes.string.isRequired,
-  cardAttr2: PropTypes.string.isRequired,
-  cardAttr3: PropTypes.string.isRequired,
+  cardAttr1: PropTypes.number.isRequired,
+  cardAttr2: PropTypes.number.isRequired,
+  cardAttr3: PropTypes.number.isRequired,
   cardImage: PropTypes.string.isRequired,
   cardRare: PropTypes.string.isRequired,
   cardTrunfo: PropTypes.bool.isRequired,
