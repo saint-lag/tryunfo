@@ -11,3 +11,5 @@ const fighters = {
     emoji: '🍌 🍌 🍌',
   },
 };
+
+export default fighters;
