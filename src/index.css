@@ -3,11 +3,92 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  text-align: center;
+  margin: 0;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#root {
+  height: 100%;
+}
+
+#main-container {
+  display: flex;
+  height: 100%;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#card-super-container h1,
+#form-container h1 {
+  position: absolute;
+  top: 100px;
+  margin-right: 20%;
+}
+
+#card-super-container,
+#form-container {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+}
+
+#card-super-container {
+  background-color: #023031;
+  color: #fff;
+}
+
+#card-container,
+#trunfo-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 10px;
+  height: 550px;
+  width: 360px;
+}
+
+#card-container {
+  background-color: #5c1f1f;
+  border: 1px solid white;
+  line-height: 1.5rem;
+}
+
+#trunfo-form {
+  border: 1px solid #023031;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#trunfo-form label {
+  line-height: 2rem;
+}
+
+#card-image {
+  width: 100%;
+}
+
+#optional-emoji {
+  font-weight: bold;
+  font-size: normal;
 }

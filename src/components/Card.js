@@ -12,6 +12,7 @@ class Card extends React.Component {
       cardImage,
       cardRare,
       cardTrunfo,
+      optionalEmoji,
     } = this.props;
 
     function isCardTrunfoTrue() {
@@ -23,12 +24,18 @@ class Card extends React.Component {
     return (
       <section id="card-container">
         <h2 data-testid="name-card">{cardName}</h2>
-        <img data-testid="image-card" src={ cardImage } alt={ cardName } />
+        <img
+          id="card-image"
+          data-testid="image-card"
+          src={ cardImage }
+          alt={ cardName }
+        />
         <p data-testid="description-card">{cardDescription}</p>
         <p data-testid="attr1-card">{cardAttr1}</p>
         <p data-testid="attr2-card">{cardAttr2}</p>
         <p data-testid="attr3-card">{cardAttr3}</p>
         <p data-testid="rare-card">{cardRare}</p>
+        <p id="optional-emoji">{optionalEmoji}</p>
         {isCardTrunfoTrue()}
       </section>
     );
@@ -36,25 +43,19 @@ class Card extends React.Component {
 }
 
 Card.propTypes = {
-  cardName: PropTypes.string,
-  cardDescription: PropTypes.string,
-  cardAttr1: PropTypes.string,
-  cardAttr2: PropTypes.string,
-  cardAttr3: PropTypes.string,
-  cardImage: PropTypes.string,
-  cardRare: PropTypes.string,
-  cardTrunfo: PropTypes.bool,
+  cardName: PropTypes.string.isRequired,
+  cardDescription: PropTypes.string.isRequired,
+  cardAttr1: PropTypes.string.isRequired,
+  cardAttr2: PropTypes.string.isRequired,
+  cardAttr3: PropTypes.string.isRequired,
+  cardImage: PropTypes.string.isRequired,
+  cardRare: PropTypes.string.isRequired,
+  cardTrunfo: PropTypes.bool.isRequired,
+  optionalEmoji: PropTypes.string,
 };
 
 Card.defaultProps = {
-  cardName: 'no card name',
-  cardDescription: 'no card description',
-  cardAttr1: 'no card attr1',
-  cardAttr2: 'no card attr2',
-  cardAttr3: 'no card attr3',
-  cardImage: 'no card image',
-  cardRare: 'no rare card',
-  cardTrunfo: false,
+  optionalEmoji: '',
 };
 
 export default Card;
