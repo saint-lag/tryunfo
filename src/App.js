@@ -13,6 +13,8 @@ class App extends React.Component {
     this.attributesChecker = this.attributesChecker.bind(this);
     this.inputChecker = this.inputChecker.bind(this);
     this.resetPreview = this.resetPreview.bind(this);
+    this.delCard = this.delCard.bind(this);
+    this.isCardTrunfoTrue = this.isCardTrunfoTrue.bind(this);
     this.state = {
       cardName: '',
       cardDescription: '',
@@ -22,7 +24,7 @@ class App extends React.Component {
       cardImage: '',
       cardRare: 'normal',
       cardTrunfo: false,
-      data: exampleData,
+      data: [],
       optionalEmoji: '',
       hasTrunfo: false,
       isSaveButtonDisabled: true,
@@ -44,6 +46,8 @@ class App extends React.Component {
       data,
     } = this.state;
 
+    this.isCardTrunfoTrue(cardTrunfo);
+
     data.push({
       cardName,
       cardDescription,
@@ -62,6 +66,14 @@ class App extends React.Component {
       }),
       () => this.resetPreview(),
     );
+  }
+
+  isCardTrunfoTrue(cardTrunfo) {
+    if (Boolean(cardTrunfo) === true) {
+      this.setState({
+        hasTrunfo: true,
+      });
+    }
   }
 
   areAllNumbers() {
@@ -85,7 +97,6 @@ class App extends React.Component {
       cardTrunfo: false,
       data,
       optionalEmoji: '',
-      hasTrunfo: false,
       isSaveButtonDisabled: true,
     });
   }
@@ -150,6 +161,24 @@ class App extends React.Component {
     }
   }
 
+  delCard(event) {
+    const { data } = this.state;
+    const cardName = event.target.getAttribute('cardName');
+
+    const subjectIndex = data.findIndex((item) => item.cardName === cardName);
+
+    if (data[subjectIndex].cardTrunfo === true) {
+      this.setState({
+        hasTrunfo: false,
+      });
+    }
+    data.splice(subjectIndex, 1);
+
+    this.setState({
+      data,
+    });
+  }
+
   render() {
     const { state } = this;
     return (
@@ -189,7 +218,11 @@ class App extends React.Component {
         </main>
         <section id="card-visualizer-container">
           <h1>Todas as Cartas</h1>
-          <CardVisualizer data={ state.data } />
+          <CardVisualizer
+            data={ state.data }
+            delCard={ this.delCard }
+            isCardTrunfoTrue={ this.isCardTrunfoTrue }
+          />
         </section>
       </>
     );

@@ -15,12 +15,6 @@ class Card extends React.Component {
       optionalEmoji,
     } = this.props;
 
-    function isCardTrunfoTrue() {
-      if (cardTrunfo === true) {
-        return <p data-testid="trunfo-card">Super Trunfo</p>;
-      }
-    }
-
     function colour() {
       let color = '';
       if (cardTrunfo === true) {
@@ -58,7 +52,7 @@ class Card extends React.Component {
         <p data-testid="attr3-card">{cardAttr3}</p>
         <p data-testid="rare-card">{cardRare}</p>
         <p id="optional-emoji">{optionalEmoji}</p>
-        {isCardTrunfoTrue()}
+        {}
       </section>
     );
   }
