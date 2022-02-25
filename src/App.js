@@ -1,7 +1,8 @@
 import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
-import exampleData from './data';
+import CardVisualizer from './components/CardVisualizer';
+import exampleData from './example/data';
 
 class App extends React.Component {
   constructor() {
@@ -23,7 +24,7 @@ class App extends React.Component {
       cardTrunfo: false,
       data: exampleData,
       optionalEmoji: '',
-      // hasTrunfo: false,
+      hasTrunfo: false,
       isSaveButtonDisabled: true,
     };
   }
@@ -37,21 +38,23 @@ class App extends React.Component {
       cardAttr2,
       cardAttr3,
       cardImage,
+      cardRare,
       cardTrunfo,
       optionalEmoji,
       data,
     } = this.state;
 
-    data[this.camelCase(cardName)] = {
+    data.push({
       cardName,
       cardDescription,
       cardAttr1,
       cardAttr2,
       cardAttr3,
+      cardRare,
       cardImage,
       cardTrunfo,
       optionalEmoji,
-    };
+    });
 
     this.setState(
       () => ({
@@ -59,17 +62,6 @@ class App extends React.Component {
       }),
       () => this.resetPreview(),
     );
-  }
-
-  camelCase(str) {
-    const splitted = str.split(' ');
-    const lowercaseFirstWord = splitted[0].toLowerCase();
-    splitted.shift();
-    const joinedShiftted = splitted.length > 1 ? splitted.join('') : splitted[0];
-    const arr = [];
-    arr.push(lowercaseFirstWord);
-    arr.push(joinedShiftted);
-    return arr.join('');
   }
 
   areAllNumbers() {
@@ -93,24 +85,25 @@ class App extends React.Component {
       cardTrunfo: false,
       data,
       optionalEmoji: '',
-      // hasTrunfo: false,
+      hasTrunfo: false,
       isSaveButtonDisabled: true,
     });
   }
 
   inputHandler({ target }) {
     const { name, value, checked } = target;
-    if (!checked) {
+    console.log(name, checked);
+    if (checked) {
+      this.setState({
+        [name]: this.cardTrunfo !== true,
+      });
+    } else {
       this.setState(
         () => ({
           [name]: value,
         }),
         () => this.inputChecker(),
       );
-    } else {
-      this.setState({
-        [name]: checked,
-      });
     }
   }
 
@@ -160,39 +153,45 @@ class App extends React.Component {
   render() {
     const { state } = this;
     return (
-      <main id="main-container">
-        <div id="form-container">
-          <h1>Adicionar carta</h1>
-          <Form
-            cardName={ state.cardName }
-            cardDescription={ state.cardDescription }
-            cardAttr1={ String(state.cardAttr1) }
-            cardAttr2={ String(state.cardAttr2) }
-            cardAttr3={ String(state.cardAttr3) }
-            cardImage={ state.cardImage }
-            cardRare={ state.cardRare }
-            cardTrunfo={ state.cardTrunfo }
-            // hasTrunfo={ state.hasTrunfo }
-            onSaveButtonClick={ this.onSaveButtonClick }
-            isSaveButtonDisabled={ state.isSaveButtonDisabled }
-            onInputChange={ this.inputHandler }
-          />
-        </div>
-        <div id="card-super-container">
-          <h1>Pré-visualização</h1>
-          <Card
-            cardName={ state.cardName }
-            cardDescription={ state.cardDescription }
-            cardAttr1={ Number(state.cardAttr1) }
-            cardAttr2={ Number(state.cardAttr2) }
-            cardAttr3={ Number(state.cardAttr3) }
-            cardImage={ state.cardImage }
-            cardRare={ state.cardRare }
-            cardTrunfo={ state.cardTrunfo }
-            optionalEmoji={ state.optionalEmoji }
-          />
-        </div>
-      </main>
+      <>
+        <main id="main-container">
+          <div id="form-container">
+            <h1>Adicionar carta</h1>
+            <Form
+              cardName={ state.cardName }
+              cardDescription={ state.cardDescription }
+              cardAttr1={ String(state.cardAttr1) }
+              cardAttr2={ String(state.cardAttr2) }
+              cardAttr3={ String(state.cardAttr3) }
+              cardImage={ state.cardImage }
+              cardRare={ state.cardRare }
+              cardTrunfo={ Boolean(state.cardTrunfo) }
+              hasTrunfo={ Boolean(state.hasTrunfo) }
+              onSaveButtonClick={ this.onSaveButtonClick }
+              isSaveButtonDisabled={ state.isSaveButtonDisabled }
+              onInputChange={ this.inputHandler }
+            />
+          </div>
+          <div id="card-super-container">
+            <h1>Pré-visualização</h1>
+            <Card
+              cardName={ state.cardName }
+              cardDescription={ state.cardDescription }
+              cardAttr1={ Number(state.cardAttr1) }
+              cardAttr2={ Number(state.cardAttr2) }
+              cardAttr3={ Number(state.cardAttr3) }
+              cardImage={ state.cardImage }
+              cardRare={ state.cardRare }
+              cardTrunfo={ Boolean(state.cardTrunfo) }
+              optionalEmoji={ state.optionalEmoji }
+            />
+          </div>
+        </main>
+        <section id="card-visualizer-container">
+          <h1>Todas as Cartas</h1>
+          <CardVisualizer data={ state.data } />
+        </section>
+      </>
     );
   }
 }

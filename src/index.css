@@ -29,6 +29,7 @@ code {
 
 #main-container {
   display: flex;
+  flex-wrap: wrap;
   height: 100%;
   margin: 0 auto;
   width: 100%;
@@ -72,6 +73,7 @@ code {
   background-color: #5c1f1f;
   border: 1px solid white;
   line-height: 1.5rem;
+  margin: 10px;
 }
 
 #trunfo-form {
@@ -91,4 +93,25 @@ code {
 #optional-emoji {
   font-weight: bold;
   font-size: normal;
+}
+
+#card-visualizer-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 100px;
+  background-color: rgb(141, 209, 141);
+}
+#card-visualizer-container h1 {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  width: 50%;
+}
+
+#card-visualizer {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  display: flex;
+  align-items: space-evenly;
+  flex-wrap: wrap;
+  width: 50%;
 }
