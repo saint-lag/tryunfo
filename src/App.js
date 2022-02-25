@@ -1,14 +1,17 @@
 import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
+import exampleData from './data';
 
 class App extends React.Component {
   constructor() {
     super();
+    this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
     this.inputHandler = this.inputHandler.bind(this);
     this.areAllNumbers = this.areAllNumbers.bind(this);
     this.attributesChecker = this.attributesChecker.bind(this);
     this.inputChecker = this.inputChecker.bind(this);
+    this.resetPreview = this.resetPreview.bind(this);
     this.state = {
       cardName: '',
       cardDescription: '',
@@ -16,13 +19,57 @@ class App extends React.Component {
       cardAttr2: 0,
       cardAttr3: 0,
       cardImage: '',
-      cardRare: '',
+      cardRare: 'normal',
       cardTrunfo: false,
+      data: exampleData,
       optionalEmoji: '',
       // hasTrunfo: false,
       isSaveButtonDisabled: true,
-      // onSaveButtonClick: false,
     };
+  }
+
+  onSaveButtonClick(event) {
+    event.preventDefault();
+    const {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardTrunfo,
+      optionalEmoji,
+      data,
+    } = this.state;
+
+    data[this.camelCase(cardName)] = {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardTrunfo,
+      optionalEmoji,
+    };
+
+    this.setState(
+      () => ({
+        data,
+      }),
+      () => this.resetPreview(),
+    );
+  }
+
+  camelCase(str) {
+    const splitted = str.split(' ');
+    const lowercaseFirstWord = splitted[0].toLowerCase();
+    splitted.shift();
+    const joinedShiftted = splitted.length > 1 ? splitted.join('') : splitted[0];
+    const arr = [];
+    arr.push(lowercaseFirstWord);
+    arr.push(joinedShiftted);
+    return arr.join('');
   }
 
   areAllNumbers() {
@@ -33,12 +80,33 @@ class App extends React.Component {
       : undefined;
   }
 
+  resetPreview() {
+    const { data } = this.state;
+    this.setState({
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: 0,
+      cardAttr2: 0,
+      cardAttr3: 0,
+      cardImage: '',
+      cardRare: 'normal',
+      cardTrunfo: false,
+      data,
+      optionalEmoji: '',
+      // hasTrunfo: false,
+      isSaveButtonDisabled: true,
+    });
+  }
+
   inputHandler({ target }) {
     const { name, value, checked } = target;
     if (!checked) {
-      this.setState(() => ({
-        [name]: value,
-      }), () => this.inputChecker());
+      this.setState(
+        () => ({
+          [name]: value,
+        }),
+        () => this.inputChecker(),
+      );
     } else {
       this.setState({
         [name]: checked,
@@ -56,8 +124,9 @@ class App extends React.Component {
       if (attrSum <= maxValue && attrSum >= minValue) {
         const maxIndividualValue = 90;
         const minIndividualValue = 0;
-        const attrsLimit = lst.every((attr) => attr <= maxIndividualValue
-        && attr >= minIndividualValue);
+        const attrsLimit = lst.every(
+          (attr) => attr <= maxIndividualValue && attr >= minIndividualValue,
+        );
         if (attrsLimit === true) {
           return true;
         }
@@ -73,14 +142,13 @@ class App extends React.Component {
       const { cardName, cardImage, cardDescription, cardRare } = this.state;
       const lst = [cardName, cardImage, cardDescription, cardRare];
       if (lst.every((item) => item !== '') !== false) {
-        console.log('Bigger than nothing');
         this.setState({
           isSaveButtonDisabled: false,
         });
       } else {
-        this.setState({
+        this.setState(() => ({
           isSaveButtonDisabled: true,
-        });
+        }));
       }
     } else {
       this.setState({
@@ -105,7 +173,7 @@ class App extends React.Component {
             cardRare={ state.cardRare }
             cardTrunfo={ state.cardTrunfo }
             // hasTrunfo={ state.hasTrunfo }
-            // onSaveButtonClick={ onSaveButtonClick }
+            onSaveButtonClick={ this.onSaveButtonClick }
             isSaveButtonDisabled={ state.isSaveButtonDisabled }
             onInputChange={ this.inputHandler }
           />

@@ -138,11 +138,7 @@ Form.propTypes = {
   cardTrunfo: PropTypes.bool.isRequired,
   isSaveButtonDisabled: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  onSaveButtonClick: PropTypes.func,
-};
-
-Form.defaultProps = {
-  onSaveButtonClick: null,
+  onSaveButtonClick: PropTypes.func.isRequired,
 };
 
 export default Form;
