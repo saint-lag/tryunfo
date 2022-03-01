@@ -2,7 +2,7 @@ import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
 import CardVisualizer from './components/CardVisualizer';
-import exampleData from './example/data';
+// import exampleData from './example/data';
 
 class App extends React.Component {
   constructor() {
